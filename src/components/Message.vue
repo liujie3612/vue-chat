@@ -107,4 +107,12 @@ export default {
 		float: right;
 		margin: 0 0 0 10px;
 	}
+	.m-message .self .text {
+   	    background-color: #b2e281;
+	}
+	.m-message .self .text:before {
+    	left: 100%;
+    	border-right-color: transparent;
+    	border-left-color: #b2e281;
+	}
 </style>

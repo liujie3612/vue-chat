@@ -1,7 +1,7 @@
 <template>
 	<div class="m-list">
 		<ul>
-			<li v-for="item in userList">
+			<li v-for="item in userList" :class="{active:session.userId === item.id}"  @click="select(item)">
 				<img class="avatar" width="30" height="30" :alt="item.name" :src="item.img">
 				<p class="name">{{item.name}}</p>
 			</li>
@@ -11,8 +11,13 @@
 
 <script>
 	export default {
-		props: ['userList']
-		/*userList要用驼峰*/
+		props: ['session','userList','sessionIndex'],
+		/*穿过来的数据用驼峰来表示*/
+		methods:{
+			select(value) {
+				this.sessionIndex = this.userList.indexOf(value);
+			}
+		}
 	};
 </script>
 

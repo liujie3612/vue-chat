@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
 		<div class="sidebar">
-			<Card :user="user" :search.sync="search"></Card>
-			<List :user-list="userList"></List>
+			<Card :user="user" :search="search"></Card>
+			<List :user-list="userList" :session="session" :session-index.sync="sessionIndex"></List>
 			 <!--			user-list必须要用 "-" 的形式-->
 		</div>
 
