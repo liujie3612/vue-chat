@@ -1,6 +1,6 @@
 <template>
 	<div class="m-text">
-		<textarea placeholder="按Enter 发送" v-model="text" @keyup="inputing"></textarea>
+		<textarea placeholder="按Ctrl + Enter 发送" required v-model="text" @keyup="inputing"></textarea>
 	</div>
 </template>
 
@@ -14,19 +14,16 @@
 			};
 		},
 		methods: {
-			inputing(event) {
-				event = event || window.event;
-				if (event.ctrlKey && event.keyCode === 13 && this.text.length) {
+			inputing() {
+				var event = window.event || arguments[0];
+				if (event.keyCode === 13 && this.text.length > 1) {
 					this.session.messages.push({
 						text: this.text,
 						date: new Date(),
 						self: true
 					});
 					this.text = '';
-				} else {
-					return false
 				}
-				
 			}
 		}
 	}

@@ -13,7 +13,7 @@
 
 <script>
 	export default {
-		props: ['user', 'search']
+		props: ['user','search']
 	};
 </script>
 

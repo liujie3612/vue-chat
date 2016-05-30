@@ -1,7 +1,7 @@
 <template>
 	<div class="m-list">
 		<ul>
-			<li v-for="item in userList" :class="{active:session.userId === item.id}"  @click="select(item)">
+			<li v-for="item in userList |filterBy search" :class="{active:session.userId === item.id}" @click="select(item)">
 				<img class="avatar" width="30" height="30" :alt="item.name" :src="item.img">
 				<p class="name">{{item.name}}</p>
 			</li>
@@ -11,11 +11,16 @@
 
 <script>
 	export default {
-		props: ['session','userList','sessionIndex'],
-		/*穿过来的数据用驼峰来表示*/
-		methods:{
-			select(value) {
-				this.sessionIndex = this.userList.indexOf(value);
+		props: ['session', 'userList', 'sessionIndex', 'search'],
+		/*驼峰表示*/
+		methods: {
+			select(item) {
+				this.sessionIndex = this.userList.indexOf(item);
+			}
+		},
+		filters: {
+			search(list) {
+				return list.filter(item => item.name.indexOf(this.search) > -1);
 			}
 		}
 	};

@@ -13,27 +13,29 @@
 </template>
 
 <script>
-export default {
-	props: ['user', 'userList', 'session'],
-	computed: {
-		sessionUser() {
-			return this.userList[this.session.userId - 1]
-		}
-	},
-	filters: {
-		avatar(item) {
-			var user = item.self ? this.user : this.sessionUser
-			return user && user.img
-		},
-		time(date) {
-			if (typeof date === 'string') {
-				date = new Date(date);
+	export default {
+		props: ['user', 'userList', 'session'],
+		computed: {
+			sessionUser() {
+				//			 return this.userList[this.session.userId - 1]
+				let users = this.userList.filter(item => item.id === this.session.userId);
+				return users[0];
 			}
-			var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes()
-			return date.getHours() + ':' + dateMinutes;
+		},
+		filters: {
+			avatar(item) {
+					var user = item.self ? this.user : this.sessionUser
+					return user.img
+				},
+				time(date) {
+					if (typeof date === 'string') {
+						date = new Date(date);
+					}
+					var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes()
+					return date.getHours() + ':' + dateMinutes;
+				}
 		}
-	}
-};
+	};
 </script>
 
 <style scope>
@@ -107,12 +109,14 @@ export default {
 		float: right;
 		margin: 0 0 0 10px;
 	}
+	
 	.m-message .self .text {
-   	    background-color: #b2e281;
+		background-color: #b2e281;
 	}
+	
 	.m-message .self .text:before {
-    	left: 100%;
-    	border-right-color: transparent;
-    	border-left-color: #b2e281;
+		left: 100%;
+		border-right-color: transparent;
+		border-left-color: #b2e281;
 	}
 </style>

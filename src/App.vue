@@ -1,76 +1,56 @@
 <template>
 	<div id="app">
 		<div class="sidebar">
-			<Card :user="user" :search="search"></Card>
-			<List :user-list="userList" :session="session" :session-index.sync="sessionIndex"></List>
-			 <!--			user-list必须要用 "-" 的形式-->
+			<Card :user="user" :search.sync="search"></Card>
+			<List :user-list="userList" :session="session" :search="search" :session-index.sync="sessionIndex"></List>
+			<!--			user-list必须要用 "-" 的形式-->
 		</div>
 
 		<div class="main">
-			<Message :user="user" :user-list="userList" :session="session" ></Message>
+			<Message :user="user" :user-list="userList" :session="session"></Message>
 			<Text :session="session"></Text>
 		</div>
 	</div>
 </template>
 
 <script>
+import store from './store';
 import Card from './components/Card';
 import List from './components/List';
 import Message from './components/Message';
 import Text from './components/Text';
-	
+
 export default {
 	data() {
-		let now = new Date();	
+		let serverData = store.fetch();
 		return {
-			//返回用户的信息
-			user: {
-				id: 0,
-				name: 'Liujie',
-				img: '/static/images/admin.jpg'
-			},
-			
-			// 用户列表
-        	userList: [{
-                	id: 1,
-                	name: '用户1',
-                	img: '/static/images/1.jpg'
-            	},
-            	{
-                	id: 2,
-                	name: '用户2',
-                	img: '/static/images/2.png'
-				}],
-			sessionList: [
-				{
-                	userId: 1,
-                	messages: [
-                    	{
-							text: 'Hello，这是一个基于Vue + Webpack构建的简单chat示例，聊天记录保存在localStorge。',
-                        	date: now,
-                    	}, 
-                    	{
-                        	text: '项目地址: https://github.com/coffcer/vue-chat',
-                        	date: now,
-						}
-                	]
-            	},
-            	{
-                	userId: 2,
-                	messages: []
-            	}
-        	],
-			search: '',			
-            sessionIndex: 0		
+			user: serverData.user,
+			userList: serverData.userList,
+			sessionList: serverData.sessionList,
+			search: '',
+			sessionIndex: 0
+		};
+	},
+	computed: {
+		session() {
+			return this.sessionList[this.sessionIndex]
 		}
 	},
-	computed:{
-		session () {
-			return this.sessionList[this.sessionIndex]
-		},
+	watch: {
+		// 每当sessionList改变时，保存到localStorage中
+		sessionList: {
+			deep: true,
+			handler() {
+				store.save({
+					user: this.user,
+					userList: this.userList,
+					sessionList: this.sessionList
+				});
+			}
+		}
 	},
 	components: {
-		Card,List,Message,Text
+		Card, List, Message, Text
 	}
 }
 </script>
