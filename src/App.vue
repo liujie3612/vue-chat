@@ -14,51 +14,54 @@
 </template>
 
 <script>
-import store from './store';
 import Card from './components/Card';
 import List from './components/List';
 import Message from './components/Message';
 import Text from './components/Text';
-
+	
 export default {
 	data() {
-		let serverData = store.fetch();
-		return {
-			user: serverData.user,
-			userList: serverData.userList,
-			sessionList: serverData.sessionList,
-			search: '',
-			sessionIndex: 0
-		};
+		return {		
+			user: {},
+            userList: [],
+            sessionList: [],
+            search: '',
+            sessionIndex: 0,
+		}		
+	},
+	ready:function() {
+		const _self = this;
+        var ref = new Wilddog("https://vuechat-demo.wilddogio.com");
+       	var serveData = function(cb) {
+           ref.on('value', function(snapshot) {
+               const data = {
+                   user: snapshot.val().user,
+                   userlist: snapshot.val().userList,
+                   sessionlist: snapshot.val().sessionList,
+                };
+                cb(data)
+            })
+        }
+        serveData(function(data) {
+            _self.$set('user',data.user);
+			_self.$set('userList',data.userlist);
+			_self.$set('sessionList',data.sessionlist);
+        })
 	},
 	computed: {
-		session() {
-			return this.sessionList[this.sessionIndex]
-		}
-	},
-	watch: {
-		// 每当sessionList改变时，保存到localStorage中
-		sessionList: {
-			deep: true,
-			handler() {
-				store.save({
-					user: this.user,
-					userList: this.userList,
-					sessionList: this.sessionList
-				});
-			}
-		}
-	},
+       session () {
+           return this.sessionList[this.sessionIndex];
+        }
+    },
 	components: {
-		Card, List, Message, Text
-	}
-}
+       Card,List,Message,Text, 
+    }
+}	
 </script>
-
 
 <style scoped>
 	#app {
-		margin: 20px auto;
+		margin: 150px auto;
 		width: 800px;
 		height: 600px;
 	}

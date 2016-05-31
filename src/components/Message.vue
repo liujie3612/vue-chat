@@ -17,7 +17,6 @@
 		props: ['user', 'userList', 'session'],
 		computed: {
 			sessionUser() {
-				//			 return this.userList[this.session.userId - 1]
 				let users = this.userList.filter(item => item.id === this.session.userId);
 				return users[0];
 			}
@@ -26,14 +25,14 @@
 			avatar(item) {
 					var user = item.self ? this.user : this.sessionUser
 					return user.img
-				},
-				time(date) {
-					if (typeof date === 'string') {
-						date = new Date(date);
-					}
-					var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes()
-					return date.getHours() + ':' + dateMinutes;
+			},
+			time(date) {
+				if (typeof date === 'string') {
+					date = new Date(date);
 				}
+				var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes()
+				return date.getHours() + ':' + dateMinutes;
+			}
 		}
 	};
 </script>

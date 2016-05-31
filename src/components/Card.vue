@@ -7,6 +7,7 @@
 		<footer>
 			<input type="text" class="search" placeholder="search user..." v-model="search">
 		</footer>
+		
 	</div>
 </template>
 
