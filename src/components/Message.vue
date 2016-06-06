@@ -27,10 +27,8 @@
 					return user.img
 			},
 			time(date) {
-				if (typeof date === 'string') {
-					date = new Date(date);
-				}
-				var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes()
+				var date = new Date(date);
+				var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes();
 				return date.getHours() + ':' + dateMinutes;
 			}
 		}

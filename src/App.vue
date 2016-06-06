@@ -26,35 +26,48 @@ export default {
             userList: [],
             sessionList: [],
             search: '',
-            sessionIndex: 0,
+            sessionIndex: 0
 		}		
 	},
 	ready:function() {
-		const _self = this;
-        var ref = new Wilddog("https://vuechat-demo.wilddogio.com");
+        let ref = new Wilddog("https://vuechat-demo.wilddogio.com");
        	var serveData = function(cb) {
            ref.on('value', function(snapshot) {
-               const data = {
+               let data = {
                    user: snapshot.val().user,
                    userlist: snapshot.val().userList,
                    sessionlist: snapshot.val().sessionList,
                 };
                 cb(data)
             })
-        }
+        }		
         serveData(function(data) {
-            _self.$set('user',data.user);
-			_self.$set('userList',data.userlist);
-			_self.$set('sessionList',data.sessionlist);
-        })
-	},
+            this.$set('user',data.user);
+			this.$set('userList',data.userlist);
+			this.$set('sessionList',data.sessionlist);
+        }.bind(this))
+	},	
 	computed: {
        session () {
            return this.sessionList[this.sessionIndex];
-        }
+       }
     },
+	watch: {
+		'sessionList' : {
+			handler:
+				function() {
+					let ref = new Wilddog("https://vuechat-demo.wilddogio.com");
+					ref.update({
+						user:this.user,
+                		userList: this.userList,
+                		sessionList: this.sessionList
+					})
+				},		
+				deep:true	
+		}	
+	},
 	components: {
-       Card,List,Message,Text, 
+       Card,List,Message,Text
     }
 }	
 </script>
@@ -64,7 +77,7 @@ export default {
 		margin: 150px auto;
 		width: 800px;
 		height: 600px;
-	}
+	}	
 	
 	#app .sidebar {
 		float: left;

@@ -19,8 +19,8 @@
 				if (event.keyCode === 13 && this.text.length > 1) {
 					this.session.messages.push({
 						text: this.text,
-						date: new Date(),
-						self: true
+						date: date.now,
+						self: true,
 					});
 					this.text = '';
 				}
