@@ -28,7 +28,7 @@
 			},
 			time(date) {
 				var date = new Date(date);
-				var dateMinutes = date.getMinutes() < 10 ? '0' : '' + date.getMinutes();
+				var dateMinutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
 				return date.getHours() + ':' + dateMinutes;
 			}
 		}
